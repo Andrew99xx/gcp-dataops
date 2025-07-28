@@ -126,4 +126,3 @@ sqlmesh/               # Compiled SQL, manifests, history, etc.
 .sqlmesh_*              # Any other .sqlmesh_ prefixed dirs (e.g. .sqlmesh_workflows)
 db.db                   # Local DuckDB catalog if you ever use it
 *.duckdb                # Any DuckDB file outputs
-Sqlmesh/seeds/
