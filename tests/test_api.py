@@ -11,14 +11,16 @@ load_dotenv()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("clinical-api")
 
-for var in ("GCS_HMAC_KEY_ID","GCS_HMAC_SECRET","DUCKLAKE_BUCKET"):
+for var in ("GCS_HMAC_KEY_ID", "GCS_HMAC_SECRET", "DUCKLAKE_BUCKET"):
     if var not in os.environ:
         raise RuntimeError(f"Missing required env var: {var}")
 
 app = FastAPI(title="Clinical Trials Query API")
 
+
 class QueryRequest(BaseModel):
     sql: str
+
 
 # ─── DuckDB Initialization ─────────────────────────────────────────────────────
 conn = duckdb.connect(database=":memory:")
@@ -27,31 +29,37 @@ conn.execute("LOAD httpfs;")
 
 # register GCS HMAC creds
 gcs_key, gcs_secret = os.environ["GCS_HMAC_KEY_ID"], os.environ["GCS_HMAC_SECRET"]
-conn.execute(f"""
+conn.execute(
+    f"""
 CREATE OR REPLACE SECRET gcs_creds (
   TYPE gcs,
   KEY_ID '{gcs_key}',
   SECRET '{gcs_secret}'
 );
-""")
+"""
+)
 
 # attempt to create the 'ducklake' view, but don’t crash if it fails
 ducklake_bucket = os.environ["DUCKLAKE_BUCKET"]
 try:
-    conn.execute(f"""
+    conn.execute(
+        f"""
     CREATE OR REPLACE VIEW ducklake AS
     SELECT *
     FROM read_parquet(
       'gcs://{ducklake_bucket}/clinical_trials/**/*.parquet'
     );
-    """)
+    """
+    )
 except Exception as e:
     logger.warning(f"Could not initialize ducklake view (import‐time): {e}")
+
 
 def sanitize_sql(sql: str) -> str:
     if not sql.strip().lower().startswith("select"):
         raise ValueError("Only SELECT statements are allowed")
     return f"SELECT * FROM ({sql}) AS _sub"
+
 
 @app.post("/query")
 async def query_endpoint(request: QueryRequest, http_request: Request):
