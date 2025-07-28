@@ -1,11 +1,12 @@
 # main.py (FastAPI + DuckDB query service)
 
-import os
 import logging
-from fastapi import FastAPI, HTTPException, Request
-from pydantic import BaseModel
+import os
+
 import duckdb
 from dotenv import load_dotenv
+from fastapi import FastAPI, HTTPException, Request
+from pydantic import BaseModel
 
 # ─── Setup ─────────────────────────────────────────────────────────────────────
 load_dotenv()

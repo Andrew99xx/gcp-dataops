@@ -1,7 +1,10 @@
-from fastapi import FastAPI, HTTPException, Request
-import duckdb, os, logging
-from pydantic import BaseModel
+import logging
+import os
+
+import duckdb
 from dotenv import load_dotenv
+from fastapi import FastAPI, HTTPException, Request
+from pydantic import BaseModel
 
 # ─── Setup ─────────────────────────────────────────────────────────────────────
 load_dotenv()
