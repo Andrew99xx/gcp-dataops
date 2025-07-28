@@ -1,0 +1,12 @@
+    # for linting
+flake8
+black
+isort
+
+# for testing
+pytest
+requests-mock
+email-validator>=2.0
+# other dev tools
+python-dotenv
+httpx>=0.23.0

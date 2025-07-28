@@ -1,0 +1,18 @@
+-- sqlmesh/models/clinical_trials_parquet.sql
+MODEL (
+  name clinical_trials.parquet,             -- this model’s “table”
+  kind FULL,                                -- full recompute
+  storage_format 'parquet',                 -- write Parquet files
+  partitioned_by ['OverallStatus']          -- one folder per status
+);
+
+SELECT
+  NCTId,
+  BriefTitle,
+  -- for simple queries you might join or explode `Conditions`
+  InterventionName,
+  OverallStatus,
+  EXTRACT(year FROM StartDate) AS StartYear,
+  StartDate,
+  PrimaryCompletionDate
+FROM {{ ref('staging.clinical_trials') }};

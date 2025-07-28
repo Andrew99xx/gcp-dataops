@@ -1,0 +1,11 @@
+
+MODEL (
+  name raw.clinical_trials,       -- schema.table
+  kind VIEW
+);
+
+SELECT
+  *  -- DuckDB infers all top‑level fields and nested structs
+FROM read_json_auto(
+  'gcs://{{ var("RAW_BUCKET") }}/clinical_trials.json'
+);
