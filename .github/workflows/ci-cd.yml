@@ -128,7 +128,7 @@ jobs:
         run: |
           IMAGE_URI=${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/${{ secrets.ARTIFACT_REPO_ID }}/${{ secrets.IMAGE_NAME }}:${{ github.sha }}
           echo "Built image: $IMAGE_URI"
-          docker buildx build --platform linux/amd64 -t $IMAGE_URI --push api/
+          docker buildx build --platform linux/amd64 -t $IMAGE_URI --push
           echo "IMAGE_URI=$IMAGE_URI" >> $GITHUB_ENV
 
   deploy:
