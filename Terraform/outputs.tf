@@ -1,19 +1,20 @@
 output "raw_bucket" {
-  description = "GCS bucket for raw clinical trial data"
-  value       = google_storage_bucket.raw.name
+  description = "Name of the raw data bucket"
+  value       = module.raw_bucket.name
 }
 
 output "ducklake_bucket" {
-  description = "GCS bucket for DuckLake Parquet output"
-  value       = google_storage_bucket.ducklake.name
+  description = "Name of the ducklake data bucket"
+  value       = module.ducklake_bucket.name
 }
+
 
 output "artifact_repo" {
   description = "Artifact Registry Docker repository"
-  value       = google_artifact_registry_repository.docker_repo.id
+  value       = module.docker_repo.full_name
 }
 
 output "cloud_run_url" {
   description = "URL of the deployed Cloud Run API"
-  value       = google_cloud_run_service.api.status[0].url
+  value       = module.cloud_run.url
 }

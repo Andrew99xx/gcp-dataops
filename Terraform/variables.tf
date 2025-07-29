@@ -47,3 +47,9 @@ variable "cloud_run_service" {
   default     = "clinical-trials-api"
 }
 
+
+variable "run_service_account_id" {
+  type    = string
+  default = "clinical-trials-run-sa"
+}
+
