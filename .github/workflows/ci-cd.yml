@@ -134,17 +134,13 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-and-push-image
     steps:
-      - name: Decode SA key
-        run: |
-          echo "$GCP_SA_KEY_B64" | base64 --decode > "${HOME}/gcp-sa-key.json"
-          export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcp-sa-key.json"
-      - uses: actions/checkout@v3
+      - name: Checkout repo
+        uses: actions/checkout@v3
       - name: Authenticate to GCP
         uses: google-github-actions/auth@v1
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
-      - name: Checkout repo
-        uses: actions/checkout@v3
+     
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
