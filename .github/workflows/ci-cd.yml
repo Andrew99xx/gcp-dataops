@@ -85,6 +85,7 @@ jobs:
           TF_VAR_cloud_run_service:     ${{ secrets.CLOUD_RUN_SERVICE }}
           ACTIONS_RUNTIME_TOKEN:        ${{secrets.ACTIONS_RUNTIME_TOKEN}}
           ACTIONS_RUNTIME_URL:          ${{secrets.ACTIONS_RUNTIME_URL}}
+          TF_STATE_BUCKET:              ${{secrets.TF_STATE_BUCKET}}
         run: |
           terraform fmt -check -recursive
           terraform init \
