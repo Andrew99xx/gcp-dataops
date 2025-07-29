@@ -106,7 +106,7 @@ jobs:
           terraform validate -no-color
           terraform plan -out=tfplan -no-color
       - name: Upload Terraform plan
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: tfplan
           path: Terraform/tfplan
@@ -136,7 +136,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Download Terraform plan
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: tfplan
           path: Terraform
