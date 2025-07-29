@@ -100,7 +100,7 @@ jobs:
           TF_VAR_raw_bucket_name:       ${{ secrets.RAW_BUCKET }}
           TF_VAR_ducklake_bucket_name:  ${{ secrets.DUCKLAKE_BUCKET }}
           TF_VAR_artifact_repo_id:      ${{ secrets.ARTIFACT_REPO_ID }}
-          TF_VAR_image_uri:             ${{ env.IMAGE_URI }}
+          TF_VAR_image_uri:             ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/${{ secrets.ARTIFACT_REPO_ID }}/${{ secrets.IMAGE_NAME }}:${{ github.sha }}
           TF_VAR_cloud_run_service:     ${{ secrets.CLOUD_RUN_SERVICE }}
           ACTIONS_RUNTIME_TOKEN:        ${{secrets.ACTIONS_RUNTIME_TOKEN}}
           ACTIONS_RUNTIME_URL:          ${{secrets.ACTIONS_RUNTIME_URL}}
@@ -120,7 +120,7 @@ jobs:
           TF_VAR_raw_bucket_name:       ${{ secrets.RAW_BUCKET }}
           TF_VAR_ducklake_bucket_name:  ${{ secrets.DUCKLAKE_BUCKET }}
           TF_VAR_artifact_repo_id:      ${{ secrets.ARTIFACT_REPO_ID }}
-          TF_VAR_image_uri:             ${{ secrets.CLOUD_RUN_IMAGE_URI }}
+          TF_VAR_image_uri:             ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/${{ secrets.ARTIFACT_REPO_ID }}/${{ secrets.IMAGE_NAME }}:${{ github.sha }}
           TF_VAR_cloud_run_service:     ${{ secrets.CLOUD_RUN_SERVICE }}
         run: |
           terraform validate -no-color
@@ -134,7 +134,7 @@ jobs:
           TF_VAR_raw_bucket_name:       ${{ secrets.RAW_BUCKET }}
           TF_VAR_ducklake_bucket_name:  ${{ secrets.DUCKLAKE_BUCKET }}
           TF_VAR_artifact_repo_id:      ${{ secrets.ARTIFACT_REPO_ID }}
-          TF_VAR_image_uri:             ${{ env.IMAGE_URI }}
+          TF_VAR_image_uri:             ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/${{ secrets.ARTIFACT_REPO_ID }}/${{ secrets.IMAGE_NAME }}:${{ github.sha }}
           TF_VAR_cloud_run_service:     ${{ secrets.CLOUD_RUN_SERVICE }}
         run: |
           
