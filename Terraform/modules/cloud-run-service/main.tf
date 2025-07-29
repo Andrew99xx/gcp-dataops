@@ -4,15 +4,15 @@ resource "google_cloud_run_service" "this" {
 
   template {
 
-     metadata {
+    metadata {
       annotations = {
         # Tell Cloud Run to hit /health for readiness/liveness checks
-        "run.googleapis.com/health-check-path"                     = "/health"
+        "run.googleapis.com/health-check-path" = "/health"
         # Optional tuning:
-        "run.googleapis.com/health-check-interval"                 = "30s"
-        "run.googleapis.com/health-check-timeout"                  = "5s"
-        "run.googleapis.com/health-check-success-threshold"        = "1"
-        "run.googleapis.com/health-check-failure-threshold"        = "3"
+        "run.googleapis.com/health-check-interval"          = "30s"
+        "run.googleapis.com/health-check-timeout"           = "5s"
+        "run.googleapis.com/health-check-success-threshold" = "1"
+        "run.googleapis.com/health-check-failure-threshold" = "3"
       }
     }
     spec {
