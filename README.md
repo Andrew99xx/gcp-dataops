@@ -88,7 +88,8 @@ This repository implements a complete, automated data platform for querying clin
 
    ```bash
    gcloud storage buckets create gs://your-terraform-state \
-     --location=us-central1 --uniform-bucket-level-access
+     --location=us-central1 --uniform-bucket-level-access  --versioning
+
    ```
 
 2. **Initialize & plan**
