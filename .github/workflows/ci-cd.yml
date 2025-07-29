@@ -111,7 +111,7 @@ jobs:
             -input=false \
             -reconfigure \
             -backend-config="bucket=${TF_STATE_BUCKET}" \
-            -backend-config="prefix=clinical-trials/state"
+            -backend-config="prefix=clinical-trials/terraform/state"
       - name: Terraform validate & plan
         working-directory: Terraform
         env:
