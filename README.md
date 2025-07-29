@@ -12,26 +12,7 @@ This repository implements a complete, automated data platform for querying clin
 
 ## Architecture
 
-```
-+----------------+      +----------------------+      +----------------+
-| ClinicalTrials |      |   Google Cloud       |      | DuckLake GCS   |
-|   Download     | ---> |  Storage Raw Bucket  | ---> | Parquet Files  |
-|   (ingest.py)  |      +----------------------+      +----------------+
-|                |                                     |
-+----------------+                                     |
-      |                                                |
-      v                                                v
-+----------------------+       SQLMesh + DuckDB       +----------------+
-|   SQLMesh Models     | --->  Transformation  --->     | DuckLake GCS   |
-|  staging→clean→parquet|                            | (partitioned)  |
-+----------------------+                            +----------------+
-      |                                                        |
-      v                                                        |
-+----------------------+                                      |
-|  FastAPI Query API   | <-- DuckDB(HTTPFS + HMAC cred) <------
-|   `/query` endpoint  |
-+----------------------+
-```
+![High‑level Architecture](assets/arch.png)
 
 * **ingest.py** downloads JSON ZIP from ClinicalTrials.gov and uploads raw JSON to `raw` GCS bucket.
 * **SQLMesh** reads raw JSON via DuckDB's HTTPFS, cleans & normalizes fields, and exports Parquet to `ducklake` bucket.
