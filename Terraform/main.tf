@@ -50,7 +50,7 @@ module "run_sa" {
   source       = "./modules/service-account"
   account_id   = var.run_service_account_id
   display_name = "Cloud Run SA for Clinical Trials API"
-  
+
 }
 
 # 5 & 6. IAM bindings

@@ -5,6 +5,6 @@ resource "google_storage_bucket" "this" {
 
   lifecycle_rule {
     condition { age = var.lifecycle_days }
-    action    { type = "Delete" }
+    action { type = "Delete" }
   }
 }
