@@ -1,5 +1,6 @@
 # main.py (FastAPI + DuckDB query service)
 
+import utils.session
 import logging
 import os
 

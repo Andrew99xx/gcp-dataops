@@ -49,12 +49,10 @@ coverage.xml
 *.log
 
 # IDEs and editors
-.vscode/
 .idea/
 *.iml
 
 # dotenv
-.env
 .env.*.local
 secrets/
 *.secrets
@@ -119,10 +117,15 @@ Thumbs.db
 # Custom / logs
 # ====================
 *.log
-.env
 
 
 sqlmesh/               # Compiled SQL, manifests, history, etc.
 .sqlmesh_*              # Any other .sqlmesh_ prefixed dirs (e.g. .sqlmesh_workflows)
 db.db                   # Local DuckDB catalog if you ever use it
 *.duckdb                # Any DuckDB file outputs
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
+.gitignore
+config.bat
+node_modules
