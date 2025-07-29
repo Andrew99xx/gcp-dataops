@@ -86,3 +86,11 @@ async def query_endpoint(request: QueryRequest, http_request: Request):
     except Exception as e:
         logger.error(f"Query failed: {e}")
         raise HTTPException(status_code=500, detail="Internal query error")
+
+
+@app.get("/health")
+async def health_check():
+    """
+    Simple healthcheck endpoint.
+    """
+    return {"status": "ok"}
