@@ -109,7 +109,7 @@ jobs:
           terraform fmt -check -recursive
           terraform init \
             -input=false \
-            -reconfigure
+            -reconfigure \
             -backend-config="bucket=${TF_STATE_BUCKET}" \
             -backend-config="prefix=clinical-trials/state"
       - name: Terraform validate & plan
