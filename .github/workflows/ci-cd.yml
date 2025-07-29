@@ -105,12 +105,11 @@ jobs:
         run: |
           terraform validate -no-color
           terraform plan -out=tfplan -no-color
-      # - name: Upload Terraform plan
-      #   if: ${{ env.ACTIONS_RUNTIME_TOKEN != '' && env.ACTIONS_RUNTIME_URL != '' }}
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: tfplan
-      #     path: Terraform/tfplan
+      - name: Upload Terraform plan
+        uses: actions/upload-artifact@v3
+        with:
+          name: tfplan
+          path: Terraform/tfplan
 
   build-and-push-image:
     runs-on: ubuntu-latest
