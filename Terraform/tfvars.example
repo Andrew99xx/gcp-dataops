@@ -1,0 +1,22 @@
+# terraform/terraform.tfvars
+
+# ────────────────────────────────────────────────────────────────
+# Core project settings
+project_id = ""
+region     = ""
+
+# ────────────────────────────────────────────────────────────────
+# GCS buckets
+raw_bucket_name      = ""
+ducklake_bucket_name = ""
+
+# ────────────────────────────────────────────────────────────────
+# Artifact Registry
+artifact_repo_id = ""
+
+# ────────────────────────────────────────────────────────────────
+# Cloud Run deployment
+image_uri = ""
+# Name of the Cloud Run service
+cloud_run_service = ""
+

@@ -30,12 +30,14 @@ This repository implements a complete, automated data platform for querying clin
    * Cloud Storage (`storage.googleapis.com`)
    * Artifact Registry (`artifactregistry.googleapis.com`)
    * Cloud Run (`run.googleapis.com`)
+   * IAM (`iamcredentials.googleapis.com`)
 3. **Service Account** JSON with:
 
-   * `roles/storage.admin` (for Terraform state & bucket creation)
-   * `roles/artifactregistry.admin`
-   * `roles/run.admin`
-   * `roles/iam.serviceAccountAdmin`
+   * `Storage Admin` (for Terraform state & bucket creation)
+   * `Artifact Registry Admin`
+   * `Cloud Run Admin`
+   * `Service Account User`
+   * `Secret Manager Admin`
 4. **Local Tools**:
 
    * Terraform v1.5+
@@ -49,8 +51,8 @@ This repository implements a complete, automated data platform for querying clin
 1. **Clone the repo**
 
    ```bash
-   git clone https://github.com/your-user/your-repo.git
-   cd your-repo
+   git clone https://github.com/Andrew99xx/gcp-dataops.git
+   cd gcp-dataops
    ```
 
 2. **Create & activate virtualenv**
@@ -68,14 +70,15 @@ This repository implements a complete, automated data platform for querying clin
    ```
 
 4. **Configure `.env`** (in repo root)
+    * Go to `GCS` -> `Cloud Storage` -> `Settings` -> `Interoperability` -> `Access keys for your user account`. Then generate Access key and Secret key
 
-   ```ini
-   GOOGLE_APPLICATION_CREDENTIALS=/path/to/sa-key.json
-   RAW_BUCKET=your-name-clinical-trials-raw
-   DUCKLAKE_BUCKET=your-name-clinical-trials-ducklake
-   GCS_HMAC_KEY_ID=...
-   GCS_HMAC_SECRET=...
-   ```
+    * Copy or rename .env.example to .env, then fill out the information
+        ```ini
+        RAW_BUCKET=your-name-clinical-trials-raw
+        DUCKLAKE_BUCKET=your-name-clinical-trials-ducklake
+        GCS_HMAC_KEY_ID=...
+        GCS_HMAC_SECRET=...
+        ```
 
 ---
 
@@ -89,17 +92,20 @@ This repository implements a complete, automated data platform for querying clin
    ```
 
 2. **Initialize & plan**
+   * Create `backend.tfvars`. Put the below content and populate them
+        ```hcl
+            bucket = "<my-data-thread-terraform-state>"
+            prefix = "<clinical-trials/terraform/state>"
+        ```
+   * Copy or rename tfvars.example to terraform.tfvars and fill out with values
 
-   ```bash
-   cd Terraform
-   terraform init \
-     -backend-config="bucket=your-terraform-state" \
-     -backend-config="prefix=clinical-trials/state"
-   terraform fmt -check
-   terraform validate
-   terraform plan -out=tfplan
-   ```
-
+        ```bash
+        cd Terraform
+        terraform init -backend-config=backend.tfvars
+        terraform fmt -check
+        terraform validate
+        terraform plan -var-file="terraform.tfvars" -out=tfplan
+        ```
 3. **Apply**
 
    ```bash
@@ -124,8 +130,8 @@ Outputs include bucket names and Cloud Run URL.
 
    ```bash
    cd sqlmesh_project
-   sqlmesh plan --environment dev
-   sqlmesh apply --environment dev
+   sqlmesh plan 
+   sqlmesh apply
    ```
 
    Models:
@@ -150,10 +156,8 @@ Outputs include bucket names and Cloud Run URL.
    cd api
    docker build -t clinical-query-api .
    docker run -p 8080:8080 \
-     -e GCS_HMAC_KEY_ID=$GCS_HMAC_KEY_ID \
-     -e GCS_HMAC_SECRET=$GCS_HMAC_SECRET \
-     -e DUCKLAKE_BUCKET=$DUCKLAKE_BUCKET \
-     clinical-query-api
+            --env-file .env \
+            clinical-query-api
    ```
 
 3. **Query**
@@ -171,10 +175,10 @@ Outputs include bucket names and Cloud Run URL.
 The GitHub Actions workflow in `.github/workflows/ci-cd.yml` performs:
 
 1. **Lint & Test Python**: Flake8, Black, isort, pytest
-2. **SQLMesh Tests**: `sqlmesh test --environment dev`
+2. **SQLMesh Tests**: `sqlmesh test `
 3. **Terraform**: fmt, init, validate, plan (with backend config)
 4. **Build & Push**: Docker image to Artifact Registry
-5. **Deploy**: `terraform apply` + `gcloud run deploy`
+5. **Deploy**: `terraform apply`
 
 Ensure repository secrets are set for GCP credentials, project, region, bucket names, and image names.
 
