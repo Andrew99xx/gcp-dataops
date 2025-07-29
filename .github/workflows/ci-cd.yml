@@ -48,11 +48,11 @@ jobs:
       - run: pip install sqlmesh duckdb
       - name: Run SQLMesh tests
         working-directory: Sqlmesh
-        run: sqlmesh test --environment dev
+        run: sqlmesh test
 
   terraform-plan:
     runs-on: ubuntu-latest
-    needs: test-sqlmesh
+    needs: test-python
     steps:
       - name: Decode SA key
         run: |
@@ -77,9 +77,14 @@ jobs:
           TF_VAR_artifact_repo_id:      ${{ secrets.ARTIFACT_REPO_ID }}
           TF_VAR_image_uri:             ${{ secrets.CLOUD_RUN_IMAGE_URI }}
           TF_VAR_cloud_run_service:     ${{ secrets.CLOUD_RUN_SERVICE }}
+          ACTIONS_RUNTIME_TOKEN:        ${{secrets.ACTIONS_RUNTIME_TOKEN}}
+          ACTIONS_RUNTIME_URL:          ${{secrets.ACTIONS_RUNTIME_URL}}
         run: |
           terraform fmt -check -recursive
-          terraform init -input=false
+          terraform init \
+            -input=false \
+            -backend-config="bucket=${TF_STATE_BUCKET}" \
+            -backend-config="prefix=clinical-trials/state"
       - name: Terraform validate & plan
         working-directory: Terraform
         env:
@@ -93,11 +98,12 @@ jobs:
         run: |
           terraform validate -no-color
           terraform plan -out=tfplan -no-color
-      - name: Upload Terraform plan
-        uses: actions/upload-artifact@v3
-        with:
-          name: tfplan
-          path: Terraform/tfplan
+      # - name: Upload Terraform plan
+      #   if: ${{ env.ACTIONS_RUNTIME_TOKEN != '' && env.ACTIONS_RUNTIME_URL != '' }}
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: tfplan
+      #     path: Terraform/tfplan
 
   build-and-push-image:
     runs-on: ubuntu-latest
